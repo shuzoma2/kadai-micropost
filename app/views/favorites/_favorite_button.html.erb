@@ -1,0 +1,16 @@
+<% if current_user.favoritepost?(micropost) %>  <%# すでにログインユーザーがによりお気に入りをされていれば %>
+ <%= form_for(current_user.favorites.find_by(micropost_id: micropost.id), html: { method: :delete }) do |f| %>
+  <%= hidden_field_tag :micropost_id, micropost.id %>
+  <%= f.submit 'お気に入り解除', class: 'btn btn-danger btn-block' %>
+<% end %>
+<% else %>
+<%# form_for(Favoriteのインスタンス) %>
+<%# Favoriteのインスタンスが空のデータの場合FavoritesControllerのcreateにとび、既にデータが入っている場合updateに飛ぶようになっている %>
+ <%= form_for(current_user.favorites.build) do |f| %>
+  <%# hidden_field_tag :送りたいパラメータ名, パラメータの内容 %>
+  <%# ex hidden_field_tag :favorite_id, 3 %>
+  <%# 上記の場合、送られたコントローラー側でparams[:favorite_id]の形で受け取れ、その中身は3となる。 %>
+   <%= hidden_field_tag :micropost_id, micropost.id %>
+   <%= f.submit 'お気に入り', class: 'btn btn-primary btn-block' %>
+ <% end %>
+<% end %>
